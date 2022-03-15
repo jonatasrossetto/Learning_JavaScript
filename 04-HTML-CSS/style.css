@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(255, 236, 153);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  padding: 75px;
+}
+
+h1 {
+  font-size: 40px;
+  padding-bottom: 25px;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.first {
+  color: red;
+}
+
+#your-name {
+  background-color: #000000;
+  border: 5px solid #444;
+  width: 400px;
+  margin-top: 25px;
+  padding: 30px;
+}
+
+input,
+button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+a {
+  background-color: #9acd32;
+}
+
+#your-name h2 {
+  color: olivedrab;
+}
+
+#course-image {
+  width: 50%;
+}
+
+/* assim são os comentários,
+html e css são linguagens de script, aparentemente bem diretas
+vc tem os atributos que mudam parâmetros de estilo como cor, margens, etc
+e vc tem a possibilidade de fazer isso para elementos específicos na 
+página html, os seletores # e .  permitem definir estilos para classes específicas 
+na página html */
