@@ -83,16 +83,23 @@ const displayMovements = function(movements)
   })
 };
 
-displayMovements(account1.movements);
-console.log(containerMovements.innerHTML);
+const calcPrintBalance = function (movements) 
+{
+  const balance = movements.reduce((accumulator,value) => accumulator+value,0);
+  labelBalance.textContent = `${balance} EUR`;
+}
 
-const user = 'Steven Thomas Williams'; //username stw
-const username = user
-  .toLowerCase()
-  .split(' ')
-  .map(value => value[0])
-  .join('');
-console.log(username);
+displayMovements(account1.movements);
+calcPrintBalance(account1.movements);
+// console.log(containerMovements.innerHTML);
+
+// const user = 'Steven Thomas Williams'; //username stw
+// const username = user
+//   .toLowerCase()
+//   .split(' ')
+//   .map(value => value[0])
+//   .join('');
+// console.log(username);
 
 // const createUserNames = function(array)
 // { 
@@ -111,8 +118,10 @@ const createUserNames = function(array)
   })
 }
 createUserNames(accounts);
-console.log(accounts[0].owner);
-console.log(accounts);
+// console.log(accounts[0].owner);
+// console.log(accounts);
+
+
 
 
 
@@ -295,16 +304,90 @@ console.log(accounts);
 // console.log(movementsDescriptionsZip);
 
 
-//working with FILTER
-console.log('\n\n working with filter \n\n');
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-const deposits = movements.filter(function(value){
-  return value>0;
-})
+// //working with FILTER
+// console.log('\n\n working with filter \n\n');
+//  const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const deposits = movements.filter(function(value){
+//   return value>0;
+// })
 
-const withdrawals = movements.filter(value => value<0)
+// const withdrawals = movements.filter(value => value<0)
 
 
-console.log(movements);
-console.log(deposits);
-console.log(withdrawals);
+// console.log(movements);
+// console.log(deposits);
+// console.log(withdrawals);
+
+// //working with REDUCE
+// console.log('\n\n working with reduce \n\n');
+
+// const balance = movements.reduce(function(accumulator, value, index, array)
+// {
+//   console.log(`iteration: ${index} : accumulator: ${accumulator}`);
+//   return accumulator + value
+// },0)
+
+// console.log(`balance: ${balance}`);
+
+// const max = movements.reduce(function(accumulator, value, index)
+// {
+//   console.log(`${index} : accumulator: ${accumulator}`);
+//   if (value>accumulator)
+//   {
+//     return value;
+//   } else
+//   {
+//     return accumulator;
+//   }
+// },0)
+// console.log(Math.max(...movements));
+// console.log(max);
+
+// *********************************************************************************
+// Coding Challenge #2
+// Let's go back to Julia and Kate's study about dogs. This time, they want to convert
+// dog ages to human ages and calculate the average age of the dogs in their study.
+// Your tasks:
+// Create a function 'calcAverageHumanAge', which accepts an arrays of dog's
+// ages ('ages'), and does the following things in order:
+// 1. Calculate the dog age in human years using the following formula: if the dog is
+// <= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old,
+// humanAge = 16 + dogAge * 4
+// 2. Exclude all dogs that are less than 18 human years old (which is the same as
+// keeping dogs that are at least 18 years old)
+// 3. Calculate the average human age of all adult dogs (you should already know
+// from other challenges how we calculate averages 😉)
+// 4. Run the function for both test datasets
+// Test data:
+// § Data 1: [5, 2, 4, 1, 15, 8, 3]
+// § Data 2: [16, 6, 10, 5, 6, 1, 4]
+// GOOD LUCK 😀
+
+// const calcAverageHumanAge = function(arrayAges)
+// {
+//   console.log('arrayAges');
+//   console.log(...arrayAges);
+//   const humanAge = arrayAges.map(function(value,index)
+//   {
+//     return value<=2 ? 2*value : 16+4*value;
+//   });
+//   console.log('humanAge');
+//   console.log(...humanAge);
+//   const humanAgeFiltered = humanAge.filter(value => value>=18);
+//   console.log('humanAgeFiltered')
+//   console.log(...humanAgeFiltered);
+//   const n = humanAgeFiltered.length;
+//   const average = humanAgeFiltered.reduce(function(accumulator, value)
+//   {
+//     accumulator = accumulator + value/n;
+//     console.log(accumulator);
+//     return accumulator;
+//   },0);
+//   return average;
+// }
+// const data1 = [5, 2, 4, 1, 15, 8, 3];
+// const data2 = [16, 6, 10, 5, 6, 1, 4];
+
+// console.log(calcAverageHumanAge(data1));
+// console.log(calcAverageHumanAge(data2));
+// *********************************************************************************
