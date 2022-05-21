@@ -215,14 +215,35 @@ btnTransfer.addEventListener('click',function(e)
   inputTransferAmount.blur();
 })
 
+btnLoan.addEventListener('click',function(e){
+  e.preventDefault();
+  console.log('loan button was clicked');
+  // Loan is only granted if there is at least one deposit >= than 10% of the requested loan amount
+  const requestLoan = Number(inputLoanAmount.value);
+  console.log(currentAccount.movements);
+  console.log(inputLoanAmount.value);
+  if (requestLoan>0) {
+    if (currentAccount.movements.some(mov => mov>=0.1*requestLoan)) {
+      console.log('loan granted')
+      currentAccount.movements.push(requestLoan);
+      displayMovements(currentAccount.movements);
+      calcPrintBalance(currentAccount.movements);
+      displaySummary(currentAccount);
+    }
+  }
+  inputLoanAmount.value='';
+  console.log(currentAccount.movements);
+}) //end btnLoan event listenner
 
 btnClose.addEventListener('click',function(e){
   e.preventDefault();
   
+  // console.log("close clicked");
   if (currentAccount.username === inputCloseUsername.value){
     if(currentAccount.pin === Number(inputClosePin.value)){
       // console.log('closing account');
-      const index = accounts.findIndex(value => value === currentAccount);
+      // console.log(currentAccount);
+      const index = accounts.findIndex(value => value.username === currentAccount.username);
       // console.log(accounts);
       // console.log(index);
       accounts.splice(index,1);
@@ -234,8 +255,26 @@ btnClose.addEventListener('click',function(e){
   inputCloseUsername.value = '';
   inputClosePin.value = '';
   inputClosePin.blur();
-})
+}) //end of close account event listenner
 
+// this is not the best way to sort the movements, because it will modifie the original movement array, the best idea may be to implement the sorting on the display movements function!!
+// let btnOrder=0;
+// btnSort.addEventListener('click',function(e){
+//   e.preventDefault();
+//   console.log('sort button clicked');
+//   if (btnOrder===0) {
+//       currentAccount.movements.sort((a,b) => a-b);
+//       btnOrder=1;
+//       btnSort.value = '&downarrow; SORT'
+//   } else {
+//     currentAccount.movements.sort((a,b) => b-a);
+//     btnOrder=0;
+//     btnSort.value = '&uparrow; SORT'
+//   }
+//   displayMovements(currentAccount.movements);
+//   calcPrintBalance(currentAccount.movements);
+//   displaySummary(currentAccount);
+// }) // end of sort button event listenner
 
 
 
@@ -515,7 +554,7 @@ btnClose.addEventListener('click',function(e){
 // *********************************************************************************
 
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+//const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // const euroToUsd = 1.1;
 // // kind of a data processing pipeline using, filter, map and reduce
 // const totalDepositsUSD = movements
@@ -523,3 +562,94 @@ btnClose.addEventListener('click',function(e){
 //   .map(value => value*euroToUsd)
 //   .reduce((acc,value) => acc = acc+value);
 // console.log(totalDepositsUSD);
+
+// working 21-05-2022
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// console.log('includes method application')
+// console.log(movements);
+// // the includes methods checks for equal values
+// console.log(movements.includes(-130));
+// console.log(movements.includes(-210));
+
+// // the some methods check if there is at least one element that satisfies the condition
+// console.log('some method application')
+// console.log(movements.some(mov => mov===-130));
+// const anydeposits = movements.some(mov => mov>0);
+// console.log(anydeposits);
+
+// // the every method check if all the elements satisfies the condition
+// console.log('every method application');
+// console.log(movements.every(mov => mov>10000));
+// console.log(movements.every(mov => mov<10000));
+
+// // its is also possible to use a separate callback function
+// console.log('separate callback function');
+// const deposit = mov => mov > 0;
+// console.log(movements.filter(deposit)); // filter the depoists in movements array
+
+// // the flat method explodes nested arrays inside an array
+// console.log('flat method implementation');
+// const arrA = [[1,2,3],[4,5,6],7,8,[9,10]];
+// console.log(arrA);
+// console.log(arrA.flat(1));//deeps only one level
+// const arrB = [[[1,2],3],[4,5,6],7,8,[9,10]];
+// console.log(arrB);
+// console.log('1 level  ',arrB.flat());//deeps only one level
+// console.log('2 levels ',arrB.flat(2));//deeps only one level
+
+// // map iterates over the accounts object separating only the movements array of each account object
+// const accountMovements = accounts.map(acc => acc.movements);
+// console.log(accountMovements);
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+// const overalBalance = allMovements.reduce((previousValue, currentValue) => previousValue + currentValue,0);
+// console.log(overalBalance);
+
+// //refactoring the overalBalance calculation using method chaning
+// const overalBalanceB = accounts.map(acc => acc.movements).flat().reduce((acc,mov) => acc+mov,0);
+// console.log(overalBalanceB);
+
+// using the sort method
+// take note that the sort method modifies the original array
+const owners = ['zeus','poseidon','hermes','atena','venus','persefone'];
+console.log('original owners array:           ' + owners);
+console.log('sorted owner array:             ' + owners.sort());
+console.log('final state of the owner array: ' + owners);
+
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// sorting a numeric array, take note that sort does work on string values
+console.log('orignal movements: '+movements);
+console.log('sorted movements:  '+movements.sort());
+
+// return -1, b>a, (A,B) keep original order
+// return +1, a>b, (B,A) switch order
+// sort iterates over the array using the callback function to tell what to do
+movements.sort((a,b) => {
+  //ascending order
+  if (a>b) {
+    return +1;
+  }
+  if (b>a) {
+    return -1;
+  }
+})
+console.log('ascending: '+movements);
+
+movements.sort((a,b) => {
+  //descending order
+  if (a>b) {
+    return -1;
+  }
+  if (b>a) {
+    return +1;
+  }
+})
+console.log('descending: '+movements);
+
+
+// improving the sort callback function
+movements.sort((a,b) => a-b) // ascending
+console.log('ascending: '+movements);
+movements.sort((a,b) => b-a) // descending
+console.log('descending: '+movements);
