@@ -67,10 +67,12 @@ const inputClosePin = document.querySelector('.form__input--pin');
 //console.log('\n\n before display movements \n\n');
 //console.log(containerMovements.innerHTML);
 
-const displayMovements = function(movements) 
+const displayMovements = function(movements,sort=false) 
 {
   containerMovements.innerHTML = ' ';
-  movements.forEach(function(mov,i)
+  const movs = sort ? movements.slice().sort((a,b)=>a-b) : movements;
+
+  movs.forEach(function(mov,i)
   {
     
     const movementType = mov > 0 ? 'deposit' : 'withdrawal';
@@ -183,8 +185,7 @@ btnLogin.addEventListener('click',function(e)
   }
 })
 
-inputTransferTo
-inputTransferAmount
+
 btnTransfer.addEventListener('click',function(e)
 {
   e.preventDefault();
@@ -256,6 +257,15 @@ btnClose.addEventListener('click',function(e){
   inputClosePin.value = '';
   inputClosePin.blur();
 }) //end of close account event listenner
+
+let sorted=false;
+btnSort.addEventListener('click',function(e){
+  e.preventDefault();
+  displayMovements(currentAccount.movements,!sorted);
+  sorted = !sorted;
+  // btnSort.textContent = sorted ? "&downarrow; SORT" : "&uparrow; SORT"; // not working well
+}) //end of button sort event listener
+
 
 // this is not the best way to sort the movements, because it will modifie the original movement array, the best idea may be to implement the sorting on the display movements function!!
 // let btnOrder=0;
@@ -612,44 +622,72 @@ btnClose.addEventListener('click',function(e){
 
 // using the sort method
 // take note that the sort method modifies the original array
-const owners = ['zeus','poseidon','hermes','atena','venus','persefone'];
-console.log('original owners array:           ' + owners);
-console.log('sorted owner array:             ' + owners.sort());
-console.log('final state of the owner array: ' + owners);
+// const owners = ['zeus','poseidon','hermes','atena','venus','persefone'];
+// console.log('original owners array:           ' + owners);
+// console.log('sorted owner array:             ' + owners.sort());
+// console.log('final state of the owner array: ' + owners);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-// sorting a numeric array, take note that sort does work on string values
-console.log('orignal movements: '+movements);
-console.log('sorted movements:  '+movements.sort());
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// // sorting a numeric array, take note that sort does work on string values
+// console.log('orignal movements: '+movements);
+// console.log('sorted movements:  '+movements.sort());
 
-// return -1, b>a, (A,B) keep original order
-// return +1, a>b, (B,A) switch order
-// sort iterates over the array using the callback function to tell what to do
-movements.sort((a,b) => {
-  //ascending order
-  if (a>b) {
-    return +1;
-  }
-  if (b>a) {
-    return -1;
-  }
+// // return -1, b>a, (A,B) keep original order
+// // return +1, a>b, (B,A) switch order
+// // sort iterates over the array using the callback function to tell what to do
+// movements.sort((a,b) => {
+//   //ascending order
+//   if (a>b) {
+//     return +1;
+//   }
+//   if (b>a) {
+//     return -1;
+//   }
+// })
+// console.log('ascending: '+movements);
+
+// movements.sort((a,b) => {
+//   //descending order
+//   if (a>b) {
+//     return -1;
+//   }
+//   if (b>a) {
+//     return +1;
+//   }
+// })
+// console.log('descending: '+movements);
+
+
+// // improving the sort callback function
+// movements.sort((a,b) => a-b) // ascending
+// console.log('ascending: '+movements);
+// movements.sort((a,b) => b-a) // descending
+// console.log('descending: '+movements);
+
+// creating arrays
+// empty arrays with the fill method
+const vetor = [1,2,3,4,5,6,7];
+console.log(new Array(1,2,3,4,5,6,7));
+const x = new Array(7);
+console.log(x);
+// x.fill(1);
+x.fill(1,3,5);
+console.log(x);
+console.log(vetor);
+vetor.fill(23,3,5);
+console.log(vetor);
+
+// creating an array with the Array.from method
+const y = Array.from({length:7},()=>1);
+console.log(y);
+// const z = Array.from({length:7},(current,index)=>index+1);
+// const z = Array.from({length:7},(_,index)=>index+1);
+const z = Array.from({length:100},()=>Math.round(Math.random()*5)+1);
+console.log(z);
+
+// getting data from the html page
+// using the Array.from method to convert a NodeList from the queryselectorall method to an array, observe that the nodelist elements are strings and have the euro symbol attached, so these values must be treated before the convertion to number type
+labelBalance.addEventListener('click',function(){
+  const movementsUI = Array.from(document.querySelectorAll('.movements__value'),element => Number(element.textContent.replace('€','')));
+  console.log(movementsUI);
 })
-console.log('ascending: '+movements);
-
-movements.sort((a,b) => {
-  //descending order
-  if (a>b) {
-    return -1;
-  }
-  if (b>a) {
-    return +1;
-  }
-})
-console.log('descending: '+movements);
-
-
-// improving the sort callback function
-movements.sort((a,b) => a-b) // ascending
-console.log('ascending: '+movements);
-movements.sort((a,b) => b-a) // descending
-console.log('descending: '+movements);
