@@ -666,28 +666,73 @@ btnSort.addEventListener('click',function(e){
 
 // creating arrays
 // empty arrays with the fill method
-const vetor = [1,2,3,4,5,6,7];
-console.log(new Array(1,2,3,4,5,6,7));
-const x = new Array(7);
-console.log(x);
-// x.fill(1);
-x.fill(1,3,5);
-console.log(x);
-console.log(vetor);
-vetor.fill(23,3,5);
-console.log(vetor);
+// const vetor = [1,2,3,4,5,6,7];
+// console.log(new Array(1,2,3,4,5,6,7));
+// const x = new Array(7);
+// console.log(x);
+// // x.fill(1);
+// x.fill(1,3,5);
+// console.log(x);
+// console.log(vetor);
+// vetor.fill(23,3,5);
+// console.log(vetor);
 
-// creating an array with the Array.from method
-const y = Array.from({length:7},()=>1);
-console.log(y);
-// const z = Array.from({length:7},(current,index)=>index+1);
-// const z = Array.from({length:7},(_,index)=>index+1);
-const z = Array.from({length:100},()=>Math.round(Math.random()*5)+1);
-console.log(z);
+// // creating an array with the Array.from method
+// const y = Array.from({length:7},()=>1);
+// console.log(y);
+// // const z = Array.from({length:7},(current,index)=>index+1);
+// // const z = Array.from({length:7},(_,index)=>index+1);
+// const z = Array.from({length:100},()=>Math.round(Math.random()*5)+1);
+// console.log(z);
 
 // getting data from the html page
 // using the Array.from method to convert a NodeList from the queryselectorall method to an array, observe that the nodelist elements are strings and have the euro symbol attached, so these values must be treated before the convertion to number type
-labelBalance.addEventListener('click',function(){
-  const movementsUI = Array.from(document.querySelectorAll('.movements__value'),element => Number(element.textContent.replace('€','')));
-  console.log(movementsUI);
-})
+// labelBalance.addEventListener('click',function(){
+//   const movementsUI = Array.from(document.querySelectorAll('.movements__value'),element => Number(element.textContent.replace('€','')));
+//   console.log(movementsUI);
+// })
+
+//////////
+// Practice on array methods
+// to calculate the sum of all accounts deposits
+// const bankDeposits = accounts.map(acc => acc.movements);
+// console.log(bankDeposits.flat());
+// console.log(bankDeposits.flat().filter(value=>value>0).reduce((sum,value,index)=>sum=sum+value));
+
+// to count the number o deposits greater than 1000
+//const numDeposits1000 = bankDeposits.flat().filter(value => value>=1000).length;
+// const numDeposits1000 = bankDeposits.flat().filter(value => value>=1000).reduce((sum,value)=>sum=sum+1,0);
+// const numDeposits1000 = bankDeposits.flat().reduce((sum,value)=> (value >= 1000) ? sum=sum+1 : sum,0);
+// console.log(numDeposits1000);
+
+
+// creating an object which holds both the deposits sum and the withdrawals sum using the reduce method to implement the logic
+// const sums = bankDeposits.flat().reduce((sum,value) => {
+//   //(value>0) ? sum.deposits=sum.deposits+value : sum.withdrawals=sum.withdrawals+value;
+//   sum[value>0?'deposits':'withdrawals'] += value;
+//   console.log(sum);
+//   return sum;
+// },{
+//   deposits:0,
+//   withdrawals:0
+// })
+// console.log(sums);
+
+//convert any string to title case
+// this is a nice title -> This Is a Nice Title
+
+const convertTitleCase = function(title){
+  const exceptions = ['a','an','the','but','or','on','in','with','is'];
+  const capitalize = str => str[0].toUpperCase()+str.slice(1);
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => exceptions.includes(word) ? word : capitalize(word))
+    .join(' ');
+  return titleCase;
+}
+
+console.log(convertTitleCase('this is a nice title'));
+console.log(convertTitleCase('this is a LONG title, but not too long'));
+console.log(convertTitleCase('and this is another title with an EXAMPLE'));
+
