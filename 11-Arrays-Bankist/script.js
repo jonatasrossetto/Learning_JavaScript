@@ -811,6 +811,7 @@ console.log(howIsEating(9,10));
 console.log(howIsEating(12,10));
 
 dogs.map(dog => dog.recommendedPortion=dog.weight ** 0.75 * 28);
+dogs.map(dog => dog.howIsEating=howIsEating(dog.curFood,dog.recommendedPortion));
 console.log(dogs);
 console.log(dogs.filter(dog => dog.owners.includes('Sarah')));
 const sarahDog = dogs.filter(dog => dog.owners.includes('Sarah'));
@@ -825,9 +826,11 @@ const ownersEatTooLittle = dogs
   .filter(dog => eatTooLittle(dog.curFood,dog.recommendedPortion))
   .map(dog => dog.owners)
   .flat();
-  
+ 
 console.log(ownersEatTooMuch);
 console.log(ownersEatTooLittle);
+
+//challenge 4.4
 
 const textEatTooMuch = ownersEatTooMuch.join(' and ')+"'s dogs eats too much";
 console.log(textEatTooMuch);
@@ -835,4 +838,14 @@ console.log(textEatTooMuch);
 const textEatTooLittle = ownersEatTooLittle.join(' and ')+"'s dogs eats too little";
 console.log(textEatTooLittle);
 
-// falta terminar os desafios 5,6,7 e 8
+//challenge 4.5
+const eatExactly = (dogs.filter(dog => (dog.curFood==dog.recommendedPortion)).map(dog => dog.owners).flat().length!=0);
+console.log("is any dog eating exactly the amount of food that is recommended? ",eatExactly);
+
+//challenge 4.6 and 4.7
+const eatingOk = dogs.filter(dog => (dog.howIsEating=='eating is ok')).map(dog => dog.owners).flat().length!=0;
+const dogsEatingOk = dogs.filter(dog => (dog.howIsEating=='eating is ok'));
+console.log('is any dog eating an okay amount of food? ',eatingOk);
+console.log(dogsEatingOk);
+
+// have to finish challenge 4.8
