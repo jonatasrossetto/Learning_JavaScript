@@ -94,7 +94,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
 
@@ -104,19 +104,19 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -126,7 +126,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 const createUsernames = function (accs) {
@@ -206,8 +206,8 @@ btnTransfer.addEventListener('click', function (e) {
 btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
-  const amount = Number(inputLoanAmount.value);
-
+  const amount = Math.ceil(Number(inputLoanAmount.value));
+  
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
@@ -294,6 +294,53 @@ console.log("Number.isInteger('23'): ",Number.isInteger('23'));
 console.log("Number.isInteger(23.0): ",Number.isInteger(23.0));
 console.log("Number.isInteger(23.1): ",Number.isInteger(23.1));
 console.log("Number.isInteger(23/0): ",Number.isInteger(23/0));
+
+console.log(Math.sqrt(25));
+console.log(25**0.5);
+console.log(Math.sqrt(2));
+console.log(Math.max(23,1,60,34,90));
+console.log(Math.max(23,1,60,34,'90'));
+console.log(Math.max(23,1,60,34,'90px'));
+console.log(Math.min(23,1,60,34,90));
+
+console.log(Math.PI);
+console.log(Math.trunc(Math.random()*6)+1);
+
+const randomInt = (max,min) => Math.trunc(Math.random()*(max-min)+min);
+console.log(randomInt(6,1));
+
+console.log(Math.round(17.2));
+console.log(Math.round(17.9));
+
+console.log(Math.trunc(17.2));
+console.log(Math.trunc(17.9));
+
+console.log(Math.ceil(17.2));
+console.log(Math.ceil(17.9));
+
+console.log(Math.floor(17.2));
+console.log(Math.floor(17.9));
+console.log(Math.trunc(-19.9));
+console.log(Math.floor(-19.9));
+
+console.log((2.7).toFixed(0));
+console.log((2.7).toFixed(3));
+console.log((2.12345).toFixed(3));
+console.log(+(2.12345).toFixed(3));
+
+const now = new Date();
+console.log(now);
+console.log(new Date('May 28 2022 22:51:43'));
+console.log(new Date('December, 25, 2022'));
+console.log(new Date(account1.movementsDates[0]));
+console.log(new Date(2022,6,27,14,30,35));
+console.log(new Date(0));
+console.log(new Date(1*24*60*60*1000));
+
+const future = new Date(new Date(2023,6,27,14,30,35));
+console.log(future.getFullYear());
+console.log(future.getDay());
+
 
 
 
