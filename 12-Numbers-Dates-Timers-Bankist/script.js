@@ -80,6 +80,13 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 // Functions
+const formatCurrencyValue = (valueLocale, valueCurrency,value) => {
+  return new Intl.NumberFormat(valueLocale,{
+  style: 'currency',
+  currency: valueCurrency,
+}).format(value);  
+}
+
 
 const formatMovementDate = function(date,locale) {
   const calcDaysPassed = (date1,date2)=> Math.round(Math.abs(date2-date1)/(1000*60*60*24));
@@ -115,10 +122,12 @@ const displayMovements = function (acc, sort = false) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date,acc.locale);
     
-    const formatedMovements = new Intl.NumberFormat(acc.locale,{
-      style: 'currency',
-      currency: acc.currency,
-    }).format(mov);
+    // const formatedMovements = new Intl.NumberFormat(acc.locale,{
+    //   style: 'currency',
+    //   currency: acc.currency,
+    // }).format(mov);
+
+    const formatedMovements = formatCurrencyValue(acc.locale,acc.currency,mov);
 
     console.log('movements:'+formatedMovements);
     const html = `
@@ -137,19 +146,34 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  // const formatedBalance = new Intl.NumberFormat(acc.locale,{
+  //   style: 'currency',
+  //   currency: acc.currency,
+  // }).format(acc.balance);
+  const formatedBalance = formatCurrencyValue(acc.locale,acc.currency,acc.balance);
+  labelBalance.textContent = `${formatedBalance}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+    // const formatedIncomes = new Intl.NumberFormat(acc.locale,{
+    //   style: 'currency',
+    //   currency: acc.currency,
+    // }).format(incomes);  
+  const formatedIncomes = formatCurrencyValue(acc.locale,acc.currency,incomes);
+  labelSumIn.textContent = `${formatedIncomes}`;
 
-  const out = acc.movements
+  const outcomes = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  // const formatedOutcomes = new Intl.NumberFormat(acc.locale,{
+  //     style: 'currency',
+  //     currency: acc.currency,
+  //   }).format(Math.abs(outcomes));  
+  const formatedOutcomes = formatCurrencyValue(acc.locale,acc.currency,Math.abs(outcomes));
+  labelSumOut.textContent = `${formatedOutcomes}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -159,7 +183,12 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  // const formatedInterest = new Intl.NumberFormat(acc.locale,{
+  //     style: 'currency',
+  //     currency: acc.currency,
+  //   }).format(interest);  
+  const formatedInterest = formatCurrencyValue(acc.locale,acc.currency,interest);
+  labelSumInterest.textContent = `${formatedInterest}`;
 };
 
 const createUsernames = function (accs) {
