@@ -87,6 +87,25 @@ const formatCurrencyValue = (valueLocale, valueCurrency,value) => {
 }).format(value);  
 }
 
+const startLogOutTimer = function() {
+  let timeCount = 60; // sets the regressive timer value
+  function tick() {
+    let min = Math.trunc(timeCount/60);
+    let sec = timeCount % 60;
+    labelTimer.textContent = `${min}`.padStart(2,0)+':'+`${sec}`.padStart(2,0);
+    if (timeCount==0){
+      clearInterval(timeCount);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+    timeCount=timeCount-1;
+  }
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+
+}
+
 
 const formatMovementDate = function(date,locale) {
   const calcDaysPassed = (date1,date2)=> Math.round(Math.abs(date2-date1)/(1000*60*60*24));
@@ -215,13 +234,13 @@ const updateUI = function (acc) {
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 
 // FAKE THAT YOU ARE ALWAYS LOGGED IN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity=100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity=100;
 
 // CREATE THE CURRENT DATE TO BE DISPLAYED 
 // const now = new Date();
@@ -261,6 +280,8 @@ btnLogin.addEventListener('click', function (e) {
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
     // Display UI and message
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
     labelWelcome.textContent = `Welcome back, ${
       currentAccount.owner.split(' ')[0]
     }`;
@@ -310,6 +331,9 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+    //Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -317,17 +341,20 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
 
   const amount = Math.ceil(Number(inputLoanAmount.value));
-  
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
-    // add the date of the movement
-    currentAccount.movementsDates.push(new Date().toISOString());
-
-    // Update UI
-    updateUI(currentAccount);
-  }
-  inputLoanAmount.value = '';
+  setTimeout( function() {
+    if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+      // Add movement
+      currentAccount.movements.push(amount);
+      // add the date of the movement
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+      //Reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }
+    inputLoanAmount.value = '';
+  },3000);
 });
 
 btnClose.addEventListener('click', function (e) {
@@ -461,23 +488,34 @@ btnSort.addEventListener('click', function (e) {
 // console.log(calcDaysPassed(new Date(2023,6,27),new Date(2023,6,29)));
 
 // formating number with the internationalization API
-const number = 2987654.32;
-const options = {
-  //style: 'unit',
-  style: 'currency',
-  // style: 'percent',
-  //unit: 'mile-per-hour'
-  // unit: 'celsius',
-  // currency: 'brl',
-  // currency: 'usd',
-  currency: 'gbp',
-  //useGrouping: false, //without separators
-  useGrouping: true, //with separators
-}
-console.log('US: '+Intl.NumberFormat('en-US',options).format(number));
-console.log('DE: '+Intl.NumberFormat('de-DE',options).format(number));
-console.log('BR: '+Intl.NumberFormat('pt-BR',options).format(number));
-console.log('navigator: '+Intl.NumberFormat(navigator.language,options).format(number));
+// const number = 2987654.32;
+// const options = {
+//   //style: 'unit',
+//   style: 'currency',
+//   // style: 'percent',
+//   //unit: 'mile-per-hour'
+//   // unit: 'celsius',
+//   // currency: 'brl',
+//   // currency: 'usd',
+//   currency: 'gbp',
+//   //useGrouping: false, //without separators
+//   useGrouping: true, //with separators
+// }
+// console.log('US: '+Intl.NumberFormat('en-US',options).format(number));
+// console.log('DE: '+Intl.NumberFormat('de-DE',options).format(number));
+// console.log('BR: '+Intl.NumberFormat('pt-BR',options).format(number));
+// console.log('navigator: '+Intl.NumberFormat(navigator.language,options).format(number));
 
+// setTimeout(()=>console.log('5seconds has passed'),5000);
+// console.log('waiting.......');
+// setTimeout((v1,v2)=>console.log('10seconds has passed '+v1+' '+v2),5000,'var1','var2');
 
-
+// setInterval(function(){
+//   const now = new Date();
+//   // console.log(now.getHours().padStart(2,'0')+":"+now.getMinutes().padStart(2,'0')+":"+now.getSeconds().padStart(2,'0'));
+//   console.log(`${now.getHours()}`.padStart(2,0)+":"
+//     +`${now.getMinutes()}`.padStart(2,0)+":"
+//     +`${now.getSeconds()}`.padStart(2,0));
+//   // console.log(now.getTime());
+  
+// },1000)
